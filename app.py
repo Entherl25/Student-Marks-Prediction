@@ -35,14 +35,21 @@ st.markdown("""
 # ---------- Load data & models ----------
 @st.cache_data
 def load_data():
-    path = "data/cleaned_student_data.csv"
-    if not os.path.exists(path):
+    if os.path.exists("data/cleaned_student_data.csv"):
+        path = "data/cleaned_student_data.csv"
+    elif os.path.exists("cleaned_student_data.csv"):
+        path = "cleaned_student_data.csv"
+    elif os.path.exists("data/StudentPerformanceFactors.csv"):
         path = "data/StudentPerformanceFactors.csv"
+    else:
+        path = "StudentPerformanceFactors.csv"
     return pd.read_csv(path)
 
 @st.cache_resource
 def load_bundle():
-    return joblib.load("models/model_bundle.pkl")
+    if os.path.exists("models/model_bundle.pkl"):
+        return joblib.load("models/model_bundle.pkl")
+    return joblib.load("model_bundle.pkl")
 
 try:
     df = load_data()
